@@ -1,98 +1,112 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { useRef, useState } from 'react';
+import { router } from 'expo-router';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+export default function CalcScreen() {
+  const [ecran, setEcran] = useState('0');
+  const expression = useRef('');
+  const saisie = useRef('');
+  const codeSecret = '1234=';
 
-export default function HomeScreen() {
+  const appuyer = (valeur: string) => {
+    if (valeur === 'C') {
+      expression.current = '';
+      saisie.current = '';
+      setEcran('0');
+      return;
+    }
+
+    expression.current += valeur;
+    saisie.current += valeur;
+    setEcran(expression.current);
+
+    if (saisie.current.includes(codeSecret)) {
+      saisie.current = '';
+      expression.current = '';
+      setEcran('0');
+      router.replace('/(tabs)/sos');
+    }
+  };
+
+  const calculer = () => {
+    saisie.current += '=';
+
+    if (saisie.current.includes(codeSecret)) {
+      saisie.current = '';
+      expression.current = '';
+      setEcran('0');
+      router.replace('/(tabs)/sos');
+      return;
+    }
+
+    try {
+      const resultat = eval(expression.current);
+      setEcran(String(resultat));
+      expression.current = String(resultat);
+    } catch {
+      setEcran('Erreur');
+      expression.current = '';
+    }
+    saisie.current = '';
+  };
+
+  const Btn = ({ label, type = 'normal', span = false }: { label: string, type?: string, span?: boolean }) => (
+    <TouchableOpacity
+      style={[styles.btn, type === 'op' && styles.btnOp, type === 'special' && styles.btnSpecial, type === 'egal' && styles.btnEgal, span && styles.btnSpan]}
+      onPress={() => label === '=' ? calculer() : appuyer(label)}
+    >
+      <Text style={[styles.btnText, type === 'op' && styles.btnTextOp, type === 'egal' && styles.btnTextEgal]}>
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.container}>
+      <View style={styles.ecran}>
+        <Text style={styles.ecranText} numberOfLines={1} adjustsFontSizeToFit>{ecran}</Text>
+      </View>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <View style={styles.grille}>
+        <Btn label="C" type="special" />
+        <Btn label="+/-" type="special" />
+        <Btn label="%" type="special" />
+        <Btn label="÷" type="op" />
+
+        <Btn label="7" />
+        <Btn label="8" />
+        <Btn label="9" />
+        <Btn label="×" type="op" />
+
+        <Btn label="4" />
+        <Btn label="5" />
+        <Btn label="6" />
+        <Btn label="−" type="op" />
+
+        <Btn label="1" />
+        <Btn label="2" />
+        <Btn label="3" />
+        <Btn label="+" type="op" />
+
+        <Btn label="0" span={true} />
+        <Btn label="." />
+        <Btn label="=" type="egal" />
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  container: { flex: 1, backgroundColor: '#1C1C1E', justifyContent: 'flex-end' },
+  ecran: { padding: 24, alignItems: 'flex-end' },
+  ecranText: { color: 'white', fontSize: 64, fontWeight: '200' },
+  grille: { flexDirection: 'row', flexWrap: 'wrap', padding: 12, gap: 12 },
+  btn: { width: 72, height: 72, borderRadius: 36, backgroundColor: '#333333', alignItems: 'center', justifyContent: 'center' },
+  btnOp: { backgroundColor: '#FF9F0A' },
+  btnSpecial: { backgroundColor: '#A5A5A5' },
+  btnEgal: { backgroundColor: '#FF9F0A' },
+  btnSpan: { width: 156 },
+  btnText: { color: 'white', fontSize: 28, fontWeight: '400' },
+  btnTextOp: { color: 'white' },
+  btnTextEgal: { color: 'white' },
 });

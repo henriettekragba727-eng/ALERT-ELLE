@@ -11,7 +11,7 @@ import {
   useAudioRecorder, useAudioRecorderState, useAudioPlayer,
 } from 'expo-audio';
 
-const response = await fetch('https://calcpro.allons-y.ci/journal.php', {
+const API_URL = 'https://calcpro.allons-y.ci';
 const UTILISATRICE_ID = 1;
 
 export default function JournalScreen() {
@@ -262,7 +262,6 @@ export default function JournalScreen() {
         </View>
       </Modal>
 
-      {/* ✅ NAVBAR PRO */}
       <View style={styles.navbar}>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/(tabs)/sos')}>
           <Ionicons name="home-outline" size={22} color="#6B7280" />

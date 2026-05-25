@@ -9,7 +9,7 @@ export default function LoginScreen() {
 
   const connecter = async () => {
     try {
-      const response = await fetch('https://calcpro.allons-y.ci', {
+      const response = await fetch('https://calcpro.allons-y.ci/login.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

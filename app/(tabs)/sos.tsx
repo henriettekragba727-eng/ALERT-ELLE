@@ -131,7 +131,7 @@ Venez m'aider !
   return (
     <View style={styles.container}>
 
-      {/* ✅ TOPBAR — paramètre aligné */}
+      {/* TOPBAR */}
       <View style={styles.topbar}>
         <View style={styles.topbarLeft}>
           <Text style={styles.bonjour}>Bonsoir,</Text>
@@ -213,7 +213,7 @@ Venez m'aider !
         </TouchableOpacity>
       </View>
 
-      {/* ✅ NAVBAR PRO */}
+      {/* NAVBAR PRO */}
       <View style={styles.navbar}>
         <TouchableOpacity style={[styles.navItem, styles.navActif]}>
           <View style={styles.navIconActif}>
@@ -245,7 +245,6 @@ Venez m'aider !
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F5F3FF' },
 
-  // ✅ TOPBAR
   topbar: {
     backgroundColor: 'white',
     paddingHorizontal: 16,
@@ -339,7 +338,6 @@ const styles = StyleSheet.create({
   cardTitre: { fontWeight: 'bold', color: '#1E1B2E', marginTop: 8, fontSize: 16 },
   cardSous: { fontSize: 13, color: '#6B7280', marginTop: 4 },
 
-  // ✅ NAVBAR PRO
   navbar: {
     backgroundColor: 'white',
     borderTopWidth: 1,

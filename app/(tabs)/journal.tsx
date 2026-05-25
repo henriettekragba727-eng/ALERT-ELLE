@@ -11,7 +11,7 @@ import {
   useAudioRecorder, useAudioRecorderState, useAudioPlayer,
 } from 'expo-audio';
 
-const API_URL = 'https://calcpro.allons-y.ci';
+const response = await fetch('https://calcpro.allons-y.ci/journal.php', {
 const UTILISATRICE_ID = 1;
 
 export default function JournalScreen() {

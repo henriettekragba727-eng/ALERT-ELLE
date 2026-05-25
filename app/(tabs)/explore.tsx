@@ -227,7 +227,6 @@ export default function ContactsScreen() {
         </View>
       </Modal>
 
-      {/* ✅ NAVBAR PRO */}
       <View style={styles.navbar}>
         <TouchableOpacity style={styles.navItem} onPress={() => router.push('/(tabs)/sos')}>
           <Ionicons name="home-outline" size={22} color="#6B7280" />
@@ -293,8 +292,6 @@ const styles = StyleSheet.create({
   sauverText: { color: 'white', fontWeight: 'bold', fontSize: 14 },
   annulerBtn: { alignItems: 'center', padding: 8 },
   annulerText: { color: '#6B7280', fontSize: 14 },
-
-  // ✅ NAVBAR PRO
   navbar: {
     backgroundColor: 'white', borderTopWidth: 1,
     borderTopColor: '#E9D5FF', flexDirection: 'row', paddingVertical: 10,

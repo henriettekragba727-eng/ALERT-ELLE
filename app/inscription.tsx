@@ -17,7 +17,7 @@ export default function InscriptionScreen() {
     }
 
     try {
-      const response = await fetch('https://calcpro.allons-y.ci ', {
+      const response = await fetch('https://calcpro.allons-y.ci/inscription.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
